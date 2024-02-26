@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+
+  # Define the SQL Server service
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: Your_password123
+      ACCEPT_EULA: y
+    ports:
+      - "1433:1433"
+  # Define any volumes needed for SQL Server if necessary
+
+  awesomefruits.webapi:
+    image: ${DOCKER_REGISTRY-}awesomefruitswebapi
+    build:
+      context: .
+      dockerfile: AwesomeFruits.WebAPI/Dockerfile
+    ports:
+      - "8022:80"
+      - "9022:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Fruits;User Id=SA;Password=Your_password123;Encrypt=False;MultipleActiveResultSets=true;
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/awesomefruits.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
+    depends_on:
+      - sqlserver
+    volumes:
+      - ./cert:/https
+
+  awesomefruits.webapi-users:
+    image: ${DOCKER_REGISTRY-}awesomefruitswebapi-users
+    build:
+      context: .
+      dockerfile: AwesomeFruits.WebAPI.Users/Dockerfile
+    ports:
+      - "8021:80"
+      - "9021:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Fruits;User Id=SA;Password=Your_password123;Encrypt=False;MultipleActiveResultSets=true;
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/awesomefruits.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
+    volumes:
+      - ./cert:/https
+
+    depends_on:
+      - sqlserver
+
+
