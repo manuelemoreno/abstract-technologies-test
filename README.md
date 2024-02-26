@@ -2,6 +2,8 @@
 
 This test includes two .NET 7 Web APIs. One for the main application and one for creating users and generating access tokens.
 
+It is structed in layers following Clean Architecture. It includes Unit and Integration Testing for most components.
+
 The applications can run either locally or using docker: 
 
 For running locally, simply adjust the connectionString in the appSettings.json and/or appSettings.Development.json
