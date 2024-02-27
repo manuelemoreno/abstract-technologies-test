@@ -15,7 +15,7 @@ For running using docker. Go to the folder **AwesomeFruits** and run docker comp
 
 Three containers will be created. Two web apis and one for the sql server.
 
-Example of a request in the WebApi Users Use __*POST*__ on /api/Auth/register to generate an bearer token:
+Example of a request in the WebApi Users Use __*POST*__ on /api/Auth/register to create a new user:
 ```bash
 {
   "userName": "testuser",
@@ -25,6 +25,8 @@ Example of a request in the WebApi Users Use __*POST*__ on /api/Auth/register to
   "email": "test@test.com"
 }
 ```
+Then login in with your credentials to __*POST*__ on /api/Auth/login generate a new bearer token:
+
 If all is success, the response should return the bearer token
 ```bash
 {
